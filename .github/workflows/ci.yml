@@ -71,7 +71,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - if: startsWith(github.ref, 'refs/tags/v')
-        uses: sigstore/cosign-installer@v4
+        uses: sigstore/cosign-installer@v4.1.2   # no major-version tag upstream
       - name: Sign the release image
         if: startsWith(github.ref, 'refs/tags/v')
         run: cosign sign --yes "$IMAGE@${{ steps.build.outputs.digest }}"
