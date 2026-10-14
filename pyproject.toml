@@ -1,0 +1,24 @@
+[project]
+name = "invest-analytics-bot"
+description = "Weekly portfolio analytics for a Freedom24 account: Telegram report and dashboard"
+requires-python = ">=3.13"
+license = "MIT"
+
+[tool.ruff]
+line-length = 130
+target-version = "py313"
+extend-exclude = ["invest_bot/static"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "I", "UP"]
+ignore = ["B905"]   # zip() over series of equal length by construction
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff.lint.per-file-ignores]
+# Scripts put the project root on sys.path before importing the package
+"scripts/*" = ["E402", "I001"]
+# Inline HTML and CSS templates
+"invest_bot/site.py" = ["E501"]

@@ -1,0 +1,26 @@
+# Yahoo symbols, one per line. On Tradernet the same symbol is <SYMBOL>.US
+# Backtests use the long-history fund; orders go to its cheap twin (lot = 1 share,
+# the budget is 100-1000 EUR)
+# Index funds                long history -> cheap twin
+SPY   # S&P 500              2005  -> SPYM (~92 $, was SPLG until Oct 2025)
+SPYM
+SCHX  # S&P 500-like large caps, ~31 $
+QQQ   # Nasdaq-100           2005  -> QQQM (~309 $, since 2020)
+QQQM
+VTI   # whole US market      2005  -> SCHB (~30 $)
+SCHB
+# Defensive assets
+BIL   # 1-3 month T-bills (cash), since 2007, ~92 $
+SGOV  # 0-3 month T-bills, since 2020, ~101 $
+IEF   # 7-10 year Treasuries, ~89 $
+TLT   # 20+ year Treasuries, ~78 $
+GLD   # gold                 2005  -> GLDM (~83 $, since 2018)
+GLDM
+# Large stocks (reference)
+AAPL
+MSFT
+NVDA
+AMZN
+GOOGL
+META
+JPM

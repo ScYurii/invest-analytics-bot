@@ -1,0 +1,31 @@
+# On the phone, in ~/invest-analytics-bot next to .env (INVBOT_IMAGE=...@sha256:...).
+# deploy/update.sh keeps both up to date from the latest release; see README.md.
+services:
+  bot:
+    image: ${INVBOT_IMAGE:?set INVBOT_IMAGE in .env}
+    restart: unless-stopped
+    environment:
+      INVBOT_TRADERNET_INI: /secrets/tradernet.ini
+      INVBOT_TELEGRAM_INI: /secrets/invest-bot/telegram.ini
+      INVBOT_ANTHROPIC_INI: /secrets/invest-bot/anthropic.ini
+    volumes:
+      - ./data:/app/data
+      - ./public:/app/public
+      - ${HOME}/.config/tradernet/tradernet.ini:/secrets/tradernet.ini:ro
+      # The whole directory: a bind mount of a missing file would make Docker
+      # create a root-owned directory in its place (anthropic.ini is optional)
+      - ${HOME}/.config/invest-bot:/secrets/invest-bot:ro
+    logging:
+      options: {max-size: "5m", max-file: "3"}
+
+  web:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      # The parent directory, so the atomic swap of public/site is visible
+      - ./public:/srv:ro
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    logging:
+      options: {max-size: "5m", max-file: "3"}

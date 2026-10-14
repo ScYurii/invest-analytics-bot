@@ -1,0 +1,9 @@
+*
+!requirements.txt
+!invest_bot
+!scripts
+!tickers.txt
+!compose.yaml
+!deploy/nginx.conf
+!deploy/update.sh
+**/__pycache__

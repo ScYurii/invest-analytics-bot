@@ -1,0 +1,10 @@
+*.ini
+.env
+deploy/local.env
+data/
+__pycache__/
+.venv/
+.ruff_cache/
+.pytest_cache/
+public/
+ROADMAP.private.md

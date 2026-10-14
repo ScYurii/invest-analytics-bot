@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily check: copy the invest analytics bot data if the last copy is older than 6 days
+
+[Timer]
+OnCalendar=daily
+OnBootSec=10min
+Persistent=true
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=timers.target

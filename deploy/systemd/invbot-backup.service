@@ -1,0 +1,8 @@
+[Unit]
+Description=Copy the invest analytics bot data from the phone
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/src/invest-analytics-bot/deploy/backup.sh
