@@ -114,7 +114,8 @@ doas rc-update add crond default && doas rc-service crond start
 mkdir -p ~/invest-analytics-bot && cd ~/invest-analytics-bot
 docker run --rm --entrypoint cat ghcr.io/scyurii/invest-analytics-bot:stable deploy/update.sh > update.sh
 chmod +x update.sh && ./update.sh --force && tail update.log
-( crontab -l 2>/dev/null; echo '*/15 * * * * $HOME/invest-analytics-bot/update.sh' ) | crontab -
+# busybox crontab is not suid on postmarketOS: write the user's crontab as root
+echo '*/15 * * * * $HOME/invest-analytics-bot/update.sh' | doas tee /etc/crontabs/$USER
 ```
 
 Releasing is tagging: `git tag v1.2.0 && git push origin v1.2.0` — the phone installs it within
