@@ -45,10 +45,20 @@ def passes(m: Metrics, spy_mom: float) -> bool:
     return m.above and m.mom > spy_mom
 
 
+def common_day(px: Prices, members: list[dict], share: float = 0.9) -> str | None:
+    """The last day with prices for at least `share` of the members.
+
+    SPY is refreshed daily (crash protection), the members only weekly: SPY's
+    last day would make every member look stale."""
+    last = sorted(d[-1] for d, _ in (px.series(m["symbol"].replace(".", "-"), "close") for m in members) if d)
+    return last[int(len(last) * (1 - share))] if last else None
+
+
 def screen(px: Prices, members: list[dict], day: str | None = None, top: int = TOP) -> tuple[list[Metrics], float]:
-    """Top candidates on `day` (default: the last day with data) and SPY's 12-1 momentum."""
+    """Top candidates on `day` (default: the last day most members have prices for)
+    and SPY's 12-1 momentum."""
     sd, _ = px.series("SPY")
-    day = day or sd[-1]
+    day = min(day or common_day(px, members) or sd[-1], sd[-1])
     j = bisect_right(sd, day) - 1
     _, sa = px.series("SPY")
     spy_mom = sa[j - 21] / sa[j - 252] - 1
