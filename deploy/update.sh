@@ -22,9 +22,12 @@ DIR=${DIR:-$HOME/invest-analytics-bot}
 HEALTH_WAIT=${HEALTH_WAIT:-300}
 
 cd "$DIR"
+# One run at a time: a slow pull or health wait may outlast the cron interval
+exec 9> .update.lock
+flock -n 9 || exit 0
 log() { echo "$(date -Iseconds) $*" >> update.log; }
 notify() { docker compose exec -T bot python -m invest_bot.notify "$1" >/dev/null 2>&1 || log "notify failed"; }
-current() { sed -n 's/^INVBOT_IMAGE=//p' .env 2>/dev/null; }
+current() { sed -n 's/^INVBOT_IMAGE=//p' .env 2>/dev/null || true; }   # no .env on the first run
 # Replace by rename: sh reads this very script as it runs, a copy over it would break that
 put() { cp -p "$1" "$2.tmp" && mv "$2.tmp" "$2"; }
 FILES=".env compose.yaml update.sh deploy/nginx.conf"
