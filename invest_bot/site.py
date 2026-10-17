@@ -362,8 +362,11 @@ def build(out: Path, s: Snapshot, hist: dict, spy: tuple, ideas_dir: Path, repor
         "market.html": ("Рынок", market_page(s, spy), True),
         "reports.html": ("Отчёты", reports_page(reports_dir, tmp), False),
     }
+    # Candidates are screened on the day most members have prices for, which can be older than SPY's
+    cand_day = s.candidates[0][0].date if s.candidates else ""
     for name, (title, body, charts) in pages.items():
-        (tmp / name).write_text(page(name, title, body, updated, charts))
+        upd = updated.replace(s.today, cand_day) if name == "candidates.html" and cand_day else updated
+        (tmp / name).write_text(page(name, title, body, upd, charts))
     old = out.with_name(out.name + ".old")
     shutil.rmtree(old, ignore_errors=True)
     if out.exists():

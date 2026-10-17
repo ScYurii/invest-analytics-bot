@@ -26,6 +26,7 @@ class Metrics:
     above: bool         # close above the 200-day average
     drawdown: float     # from the 52-week high
     r1m: float
+    date: str = ""   # the day the metrics are for
 
 
 def metrics(dates: list[str], close: list[float], adj: list[float], i: int, symbol: str) -> Metrics | None:
@@ -38,6 +39,7 @@ def metrics(dates: list[str], close: list[float], adj: list[float], i: int, symb
         close[i] > statistics.fmean(close[i - 199:i + 1]),
         close[i] / max(close[i - 251:i + 1]) - 1,
         adj[i] / adj[i - 21] - 1,
+        dates[i],
     )
 
 

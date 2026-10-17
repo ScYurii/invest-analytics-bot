@@ -28,3 +28,4 @@ def test_screen_uses_the_day_members_share(make_prices):
     members = [{"symbol": "AAA"}, {"symbol": "BBB"}]
     picks, _ = screen(px, members)
     assert [m.symbol for m in picks] == ["AAA", "BBB"]
+    assert picks[0].date == px.series("AAA")[0][-1]      # the members' day, not SPY's
