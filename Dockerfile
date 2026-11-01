@@ -1,5 +1,5 @@
 # The bot: weekly refresh, Telegram commands, dashboard pages into /app/public/site
-FROM python:3.13-slim-bookworm
+FROM python:3.15-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 TZ=Europe/Zagreb
 WORKDIR /app
 COPY requirements.txt .
